@@ -7,11 +7,6 @@ from django.template.loader import render_to_string
 
 class HomePageTest(TestCase):
 
-	# can remove, implicitly tested
-	# def test_root_url_resolves_to_home_page(self):
-	# 	found = resolve('/')
-	# 	self.assertEqual(found.func, home_page)
-
 	def test_home_page_returns_correct_html(self):
 		request = HttpRequest()
 		response = home_page(request)
