@@ -6,22 +6,14 @@
 	<h1>Your To-Do List</h1>
 
 	<form method='POST'>
-		<input method="post" id="id_new_item" type="" name="item_text" placeholder="Enter a to-do item">
+		<input method="post" id="id_new_item" name="item_text" placeholder="Enter a to-do item">
 		{% csrf_token %}
 	</form>
 
 	<table id="id_list_table">
-		<caption>To Do List Entries</caption>
-		<thead>
-			<tr>
-				<th>header</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>{{ new_item_data }}</td>
-			</tr>
-		</tbody>
+		<tr>
+			<td>{{ new_item_text }}</td>
+		</tr>
 	</table>
 </body>
 </html>
