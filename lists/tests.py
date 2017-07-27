@@ -21,11 +21,37 @@ class HomePageTest(TestCase):
 		response = self.client.get('/')
 		self.assertTemplateUsed(response, 'home.html')
 
-
+	
 	def test_can_save_a_POST_request(self):
-		response = self.client.post('/', data={'item_text': 'A new list item'})
-		self.assertIn('A new list item', response.content.decode())
-		self.assertTemplateUsed(response, 'home.html')
+		submitted_new_item = 'A new list item'
+		response = self.client.post('/', data={'item_text': submitted_new_item})
+		
+		self.assertEqual(Item.objects.count(), 1)
+		new_item = Item.objects.first()
+		self.assertEqual(new_item.text, submitted_new_item)
+
+
+	def test_redirects_after_POST(self):
+		submitted_new_item = 'A new list item'
+		response = self.client.post('/', data={'item_text': submitted_new_item})	
+		self.assertEqual(response.status_code, 302)
+		self.assertEqual(response['location'], '/')		
+
+
+	def test_only_saves_nonempty_items(self):
+		self.client.get('/')
+		self.assertEqual(Item.objects.count(), 0)
+
+
+	def test_displays_all_list_items(self):
+		# setup
+		Item.objects.create(text = 'itemey 1')
+		Item.objects.create(text = 'itemey 2')
+		# call code being tested
+		response = self.client.get('/')
+		# test
+		self.assertIn(response.content.decode(), 'itemey 1')
+		self.assertIn(response.content.decode(), 'itemey 2')
 
 
 class ItemModelTest(TestCase):
@@ -40,7 +66,7 @@ class ItemModelTest(TestCase):
 		second_item.text = 'The second item.'
 		second_item.save()
 
-		saved_items = Items.objects.all()
+		saved_items = Item.objects.all()
 		self.assertEqual(saved_items.count(), 2)
 
 		self.assertEqual(first_item, saved_items[0])

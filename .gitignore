@@ -1,3 +1,5 @@
 db.sqlite3
 __pycache__
 geckodriver.log
+superlists.sublime-project 
+superlists.sublime-workspace
