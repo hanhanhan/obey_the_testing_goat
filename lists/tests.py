@@ -50,8 +50,9 @@ class HomePageTest(TestCase):
 		# call code being tested
 		response = self.client.get('/')
 		# test
-		self.assertIn(response.content.decode(), 'itemey 1')
-		self.assertIn(response.content.decode(), 'itemey 2')
+		# doesn't work other way around! assert 1st argument in 2nd.
+		self.assertIn('itemey 1', response.content.decode(), )
+		self.assertIn('itemey 2', response.content.decode(), )
 
 
 class ItemModelTest(TestCase):
