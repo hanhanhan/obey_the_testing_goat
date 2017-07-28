@@ -1,9 +1,10 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-import unittest
 
-class NewVisitorTest(unittest.TestCase):
+
+class NewVisitorTest(LiveServerTestCase):
 
 	def check_for_row_in_list_table(self, row_text):
 		table = self.browser.find_element_by_id('id_list_table')
@@ -17,7 +18,7 @@ class NewVisitorTest(unittest.TestCase):
 		self.browser.quit()
 
 	def test_can_start_a_list_and_retrieve_it_later(self):
-		self.browser.get('http://localhost:8000')
+		self.browser.get(self.live_server_url)
 		
 		self.assertIn('To-Do', self.browser.title)
 		header_text = self.browser.find_element_by_tag_name('h1').text
@@ -37,6 +38,7 @@ class NewVisitorTest(unittest.TestCase):
 		
 		time.sleep(5)
 		self.check_for_row_in_list_table('1. Buy peacock feathers')
+		self.check_for_row_in_list_table('2. Use peacock feathers to make a fly')
 		# table = self.browser.find_element_by_id('id_list_table')
 		# rows = self.browser.find_elements_by_tag_name('tr')
 		# self.assertIn('1. Buy peacock feathers',  [row.text for row in rows])
